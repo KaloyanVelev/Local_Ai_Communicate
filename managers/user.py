@@ -3,7 +3,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from utils.database import db
 from models.user import UserModel
 from schemas.user import UserCreationSchema, UserLogInSchema
-
+from managers.auth import AuthManager
 
 
 class UserManager:
@@ -41,7 +41,7 @@ class UserManager:
             return {'error': 'User not found'},400
         if not check_password_hash(user.password,provided_data['password']):
             return jsonify({"error": "invalid password"}), 400
-        token = user.encode_token()
+        token = AuthManager.encode_token(user)
         return {
             "message": "login successful!",
             "token": token,

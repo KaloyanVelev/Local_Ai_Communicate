@@ -1,19 +1,8 @@
-from flask import Blueprint, request, jsonify
-from werkzeug.security import check_password_hash, generate_password_hash
-from utils.database import db
+from flask import Blueprint, request
 from utils.auth import auth
-from models.user import UserModel
-from schemas.user import UserCreationSchema, UserLogInSchema
 from managers.user import UserManager
 
 app_bp = Blueprint('api', __name__)
-
-
-@auth.verify_token
-def verify_token(token):
-    user_id = UserModel.decode_token(token)
-    return UserModel.query.filter_by(id=user_id).first() if user_id else None
-
 
 @app_bp.route('/login', methods=['POST'])
 def user_login():
