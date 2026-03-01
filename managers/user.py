@@ -4,6 +4,8 @@ from utils.database import db
 from models.user import UserModel
 from schemas.user import UserCreationSchema, UserLogInSchema
 from managers.auth import AuthManager
+from models.enums import UserLevel
+from sqlalchemy import func
 
 
 class UserManager:
@@ -56,3 +58,13 @@ class UserManager:
             'message': f'Hello {user_object.username} your permission is: {user_object.permission}'
         }
 
+    @staticmethod
+    def plan_upgrade(user, upgrade_to):
+        if upgrade_to in UserLevel:
+            user.permission = upgrade_to
+            user.updated_on = func.now()
+            db.session.commit()
+            return {
+                'message': f'User {user.username} upgraded to {upgrade_to}'
+            }
+        return {'error': 'Invalid upgrade level'}

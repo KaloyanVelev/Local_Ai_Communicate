@@ -1,6 +1,7 @@
 import uuid
 from utils.database import db
 from models.enums import UserLevel
+from sqlalchemy import func
 
 class UserModel(db.Model):
     __tablename__ = 'users'
@@ -10,3 +11,5 @@ class UserModel(db.Model):
     email = db.Column(db.String(40), unique=True, nullable=False)
     password = db.Column(db.Text(), nullable=False)
     permission = db.Column(db.String(40), default=UserLevel.BASIC_USER.name)
+    created_on = db.Column(db.DateTime, server_default=func.now())
+    updated_on = db.Column(db.DateTime, server_default=func.now())
