@@ -2,7 +2,6 @@ from flask import jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
 from utils.database import db
 from models.user import UserModel
-from schemas.user import UserCreationSchema, UserLogInSchema
 from managers.auth import AuthManager
 from models.enums import UserLevel
 from sqlalchemy import func
@@ -11,38 +10,24 @@ from sqlalchemy import func
 class UserManager:
     @staticmethod
     def register(provided_data):
-        if not provided_data:
-            return {'error': 'No data provided'}
-        errors =UserCreationSchema().validate(provided_data)
-        if errors:
-            return jsonify(errors)
+        if UserModel.query.filter_by(email=provided_data['email']).first():
+            raise ValueError('Email already registered')
 
-        username = provided_data['username']
-        email = provided_data['email']
-        password = provided_data['password']
+        provided_data['password'] = generate_password_hash(provided_data['password'])
 
-        user = UserModel(username=username,email=email,password=generate_password_hash(password))
+        user = UserModel(**provided_data)
 
         db.session.add(user)
         db.session.commit()
         return {
-            'message': f'Added User named: {username}'
+            'message': f'Added User named: {user.username}'
         }
 
     @staticmethod
     def login(provided_data):
-        if not provided_data:
-            return {
-                "error": "No data given"
-            }, 400
-        errors = UserLogInSchema().validate(provided_data)
-        if errors:
-            return jsonify(errors)
         user = UserModel.query.filter_by(username=provided_data['username']).first()
-        if not user:
-            return {'error': 'User not found'},400
-        if not check_password_hash(user.password,provided_data['password']):
-            return jsonify({"error": "invalid password"}), 400
+        if not user or not check_password_hash(user.password,provided_data['password']):
+            return jsonify({"error": "invalid credentials"}), 400
         token = AuthManager.encode_token(user)
         return {
             "message": "login successful!",
@@ -68,3 +53,11 @@ class UserManager:
                 'message': f'User {user.username} upgraded to {upgrade_to}'
             }
         return {'error': 'Invalid upgrade level'}
+
+    @staticmethod
+    def show_users():
+        users = UserModel.query.all()
+
+        return {
+            'message': f'Users: {len(users)}'
+        }, 200

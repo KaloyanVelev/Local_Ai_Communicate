@@ -1,8 +1,11 @@
 import jwt
 from datetime import datetime, timedelta, timezone
 from flask import current_app
-from utils.auth import auth
 from models.user import UserModel
+from flask_httpauth import HTTPTokenAuth
+
+
+auth = HTTPTokenAuth(scheme='Bearer')
 
 
 
