@@ -1,7 +1,5 @@
-import os
-
 from flask import Flask
-from utils.database import db
+from database import db
 from resources.routes import app_bp
 from dotenv import load_dotenv
 import os

@@ -1,5 +1,5 @@
 import uuid
-from utils.database import db
+from database import db
 from models.enums import UserLevel
 from sqlalchemy import func
 

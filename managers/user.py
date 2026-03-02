@@ -1,6 +1,6 @@
 from flask import jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
-from utils.database import db
+from database import db
 from models.user import UserModel
 from managers.auth import AuthManager
 from models.enums import UserLevel
