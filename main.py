@@ -1,7 +1,15 @@
+import os
+
 from flask import Flask
 from utils.database import db
 from resources.routes import app_bp
-from utils.dbConfig import db_user, db_password
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+db_user = os.getenv('DB_USER')
+db_password = os.getenv('DB_PASSWORD')
 
 def create_app():
     app = Flask(__name__)
