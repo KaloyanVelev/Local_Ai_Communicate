@@ -21,7 +21,7 @@ class UserManager:
         db.session.commit()
         return {
             'message': f'Added User named: {user.username}'
-        }
+        },200
 
     @staticmethod
     def login(provided_data):
@@ -34,14 +34,14 @@ class UserManager:
             "token": token,
             "user_id": user.id,
             "Permission Level": user.permission
-        }
+        }, 200
 
 
     @staticmethod
     def get_private_info(user_object):
         return {
             'message': f'Hello {user_object.username} your permission is: {user_object.permission}'
-        }
+        }, 200
 
     @staticmethod
     def plan_upgrade(user, upgrade_to):
@@ -51,8 +51,8 @@ class UserManager:
             db.session.commit()
             return {
                 'message': f'User {user.username} upgraded to {upgrade_to}'
-            }
-        return {'error': 'Invalid upgrade level'}
+            }, 200
+        return {'error': 'Invalid upgrade level'}, 400
 
     @staticmethod
     def show_users():
