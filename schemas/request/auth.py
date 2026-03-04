@@ -1,5 +1,4 @@
 from marshmallow import fields, validate, Schema
-from marshmallow import ValidationError
 from schemas.bases import BaseUserSchema, PasswordValidationMixin
 
 

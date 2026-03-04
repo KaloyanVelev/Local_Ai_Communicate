@@ -1,4 +1,3 @@
-from marshmallow import Schema, fields
 from flask import request
 from flask_restful import abort
 from marshmallow import ValidationError
