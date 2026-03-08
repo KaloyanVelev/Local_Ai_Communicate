@@ -4,17 +4,20 @@ from resources.routes import routes
 from database import db
 from dotenv import load_dotenv
 import os
+from models.user import UserModel
+from models.ai import AIChatHistoryModel
 
 load_dotenv()
 
 db_user = os.getenv('DB_USER')
 db_password = os.getenv('DB_PASSWORD')
+secret_key = os.getenv('SECRET_KEY')
 
 def create_app():
     app = Flask(__name__)
 
     app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@localhost:5432/postgres'
-    app.config['SECRET_KEY'] = "52f0c854e544f440769cba3b9c4405bd8d791f0dd5c6d5a3673eba39146bec40"
+    app.config['SECRET_KEY'] = secret_key
 
 
     db.init_app(app)
