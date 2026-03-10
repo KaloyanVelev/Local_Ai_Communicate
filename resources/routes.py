@@ -1,4 +1,4 @@
-from resources.ai import AIChatResource
+from resources.ai import AIChatResource, ChatHistoryResource
 from resources.user import UserRegisterResource, UserLogInResource, UserPrivateInfoResource, UserPlanUpgradeResource, ShowUsersResource, TestResource
 routes = [
     (UserRegisterResource, '/register'),
@@ -7,5 +7,6 @@ routes = [
     (UserPlanUpgradeResource, '/planUpgrade'),
     (ShowUsersResource, '/showUsers'),
     (AIChatResource, '/ai/chat'),
+    (ChatHistoryResource, '/ai/history/all'),
     (TestResource, '/'),
 ]

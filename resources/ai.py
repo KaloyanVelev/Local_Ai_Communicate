@@ -1,11 +1,10 @@
-from flask import request
+from flask import request, jsonify
 from flask_restful import Resource
 from managers.auth import auth
 from managers.chat_history import ChatHistoryManager
 from schemas.request.ai import AISchema
 from services.llm_service import llm_service
-
-
+from utils.decorator import permission_required
 
 LLM_PROMPT = "You are a helpful assistant. That does whatever the user asks."
 
@@ -27,12 +26,23 @@ class AIChatResource(Resource):
 
             ChatHistoryManager.save(
                 user_id=current_user.id,
-                query=data['query'],
+                query_content=data['query'],
                 response=response
             )
             return {'response': response}, 200
         except Exception as e:
             return {'message': str(e)}, 500
+    @auth.login_required
+    def get(self):
+        current_user = auth.current_user()
+        return ChatHistoryManager.get_history(current_user.id), 200
+
+
+class ChatHistoryResource(Resource):
+    @auth.login_required
+    @permission_required('ADMIN_USER')
+    def get(self):
+        return ChatHistoryManager.get_all_history(), 200
 
 
 
