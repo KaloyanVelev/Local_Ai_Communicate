@@ -1,5 +1,3 @@
-from flask import jsonify
-
 from database import db
 from models.ai import AIChatHistoryModel
 

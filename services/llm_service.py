@@ -3,7 +3,7 @@ import requests
 OLLAMA_BASE_URL = "http://localhost:11434" # Ollama service URL
 LMSTUDIO_BASE_URL = "http://localhost:1234" # LMStudio service URL
 
-#choose one of the services at the end of the file
+#!!!!!!!!!!!!!!choose one of the services at the end of the file!!!!!
 
 class OllamaService:
     def __init__(self, model_name: str = 'qwen3.5:9b'):
@@ -86,3 +86,7 @@ class LMStudioService:
 
 
 llm_service = LMStudioService() #choose LMStudioService or OllamaService im working on making it easier!
+
+#        / \
+#         |
+#         |
