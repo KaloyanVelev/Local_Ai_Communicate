@@ -92,6 +92,8 @@ conversation history in the database. Features JWT-based authentication, role-ba
      ```python
      llm_service = LMStudioService() # or OllamaService()
      #The default service selected is LMStudio if you are running ollama instead you should change it else the app wont work!!
+
+     #In case of using LMStudio make sure the model is loaded into memory and the local server in LMStudio is running
      ```
 ## 🏃 Running the App
 
