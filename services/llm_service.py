@@ -1,7 +1,11 @@
 import requests
+from dotenv import load_dotenv
+import os
 
-OLLAMA_BASE_URL = "http://localhost:11434" # Ollama service URL
-LMSTUDIO_BASE_URL = "http://localhost:1234" # LMStudio service URL
+load_dotenv()
+
+OLLAMA_BASE_URL = os.getenv('OLLAMA_BASE_URL') # Ollama service URL
+LMSTUDIO_BASE_URL = os.getenv('LMSTUDIO_BASE_URL') # LMStudio service URL
 
 #!!!!!!!!!!!!!!choose one of the services at the end of the file!!!!!
 
