@@ -88,16 +88,11 @@ conversation history in the database. Features JWT-based authentication, role-ba
    
 
 3. **LLM Service:**
-   - Open `services/llm_service.py` and choose your preferred service at the bottom:
+   - Open `services/llm_service.py` and choose your preferred service at the most bottom of the code file:
      ```python
      llm_service = LMStudioService() # or OllamaService()
      #The default service selected is LMStudio if you are running ollama instead you should change it else the app wont work!!
-     
-     
      ```
-     **Note:** For now the app is fixated on a singular AI model named `qwen3.5:9b` so to test it you need to have this model installed locally. 
-   - Or change it to whatever you want in `services/llm_service.py` in the class of the service you are using whether it be `LMStudioService` or `OllamaService`.
-
 ## 🏃 Running the App
 
 1. **Start the Flask server:**
@@ -170,6 +165,9 @@ To test the API using Postman, follow these steps:
 }
 ```
 -**Note:** if you don't include the 'Content-Type' header, the request will most likely fail.
+
+-**Note:** For now the app is fixated on a singular AI model named `qwen3.5:9b` so to test it you need to have this model installed locally. 
+   - Or change it to whatever you want in `services/llm_service.py` in the class of the service you are using whether it be `LMStudioService` or `OllamaService`.
 
 #### 4. Upgrade Plan
 - **Method:** `POST`
