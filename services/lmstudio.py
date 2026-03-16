@@ -8,7 +8,7 @@ LMSTUDIO_BASE_URL = os.getenv('LMSTUDIO_BASE_URL') # LMStudio service URL
 
 
 class LMStudioService:
-    def __init__(self, model_name: str = 'qwen/qwen3.5-9b'):
+    def __init__(self, model_name: str = 'qwen3.5:9b'):
         self.model_name = model_name
         self.url = f"{LMSTUDIO_BASE_URL}/v1/chat/completions"
 
@@ -44,3 +44,13 @@ class LMStudioService:
             raise Exception("LMStudio service timed out")
         except Exception as e:
             raise Exception(f"LLM error: {str(e)}")
+
+    def get_models_list(self):
+        response = requests.get(f"{LMSTUDIO_BASE_URL}/api/v0/models")
+        models = response.json().get('data', [])
+        model_dict = {}
+        for model in models:
+            model_dict[model.get('id')] = model.get('state', 'Unknown')
+            if model_dict[model.get('id')] == 'loaded':
+                self.model_name = model.get('id')
+        return model_dict

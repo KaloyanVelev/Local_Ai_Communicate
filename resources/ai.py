@@ -44,7 +44,7 @@ class ChatHistoryResource(Resource):
     def get(self):
         return ChatHistoryManager.get_all_history(), 200
 
-
-
-
-
+class LMStudioModelsResource(Resource):
+    @auth.login_required
+    def get(self):
+        return llm_service.get_models_list(), 200
