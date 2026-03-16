@@ -26,7 +26,7 @@ conversation history in the database. Features JWT-based authentication, role-ba
 - ✅ User registration & login with hashed passwords
 - 🔑 JWT Bearer token authentication
 - 🛡️ Role-based access control (Basic → Admin)
-- 💬 Chat with a local LLM (Ollama or LM Studio)
+- 💬 Chat with a local LLM (via Ollama or LMStudio)
 - 💾 Per-user chat history
 - 🕵️ Admin endpoint to view all chat history
 
@@ -113,6 +113,7 @@ conversation history in the database. Features JWT-based authentication, role-ba
 | `POST` | `/planUpgrade`   | Upgrade user plan             | ✅ Yes         |
 | `GET`  | `/showUsers`     | List all users (Admin only)   | 👑 Yes (Admin) |
 | `POST` | `/ai/chat`       | Chat with the LLM             | ✅ Yes         |
+| `GET`  | `/lmstudio/models`| Get available LM Studio models and set the active one | ✅ Yes         |
 | `GET`  | `/ai/history/all`| View all chat history         | 👑 Yes (Admin) |
 | `GET`  | `/`              | API Health Check/Test         | ❌ No          |
 
@@ -128,12 +129,15 @@ To test the API using Postman, follow these steps:
    - Select **Auth Type**: `Bearer Token`.
    - Paste the `token` received from the `/login` response.
 
-### Request Templates
+---
 
-#### 1. Register a New User
-- **Method:** `POST`
-- **URL:** `http://localhost:5000/register`
-- **Body:** `raw` (JSON)
+### 📝 Request Templates
+
+#### 1. 🆕 Register a New User
+> **Method:** `POST` <br>
+> **URL:** `http://localhost:5000/register` <br>
+> **Body:** `raw` (JSON)
+
 ```json
 {
     "username": "testuser",
@@ -141,62 +145,81 @@ To test the API using Postman, follow these steps:
     "password": "Password123"
 }
 ```
-*Note: Password must be at least 8 characters long and contain at least one uppercase letter.*
+💡 *Note: Password must be at least 8 characters long and contain at least one uppercase letter.*
 
-#### 2. Login
-- **Method:** `POST`
-- **URL:** `http://localhost:5000/login`
-- **Body:** `raw` (JSON)
+#### 2. 🔑 Login
+> **Method:** `POST` <br>
+> **URL:** `http://localhost:5000/login` <br>
+> **Body:** `raw` (JSON)
+
 ```json
 {
     "username": "testuser",
     "password": "Password123"
 }
 ```
-*Copy the `token` from the response to use in latter requests.*
+💡 *Copy the `token` from the response to use in latter requests.*
+#### 3. 🎛️ Get LMStudio Models
+> **Method:** `GET` <br>
+> **URL:** `http://localhost:5000/lmstudio/models` <br>
+> **Auth:** 🛡️ `Bearer Token` <br>
+> **Body:** `raw` (JSON)
 
-#### 3. Chat with AI
-- **Method:** `POST`
-- **URL:** `http://localhost:5000/ai/chat`
-- **Auth:** `Bearer Token`
-- **!!!Headers!!!:** `Content-Type: application/json`
-- **Body:** `raw` (JSON)
+```json
+{
+    "model_name": "gemma-2b-it-q8_0.gguf"
+}
+```
+💡 *This endpoint returns a list of all available models and sets the active model for the session.*
+
+💡 *IT IS VERY IMPORTANT TO SET THE ACTIVE MODEL BEFORE CHATTING WITH THE AI ELSE THE CHAT WITH THE AI WON'T WORK.*
+
+#### 4. 💬 Chat with AI
+> **Method:** `POST` <br>
+> **URL:** `http://localhost:5000/ai/chat` <br>
+> **Auth:** 🛡️ `Bearer Token` <br>
+> **Headers:** `Content-Type: application/json` <br>
+> **Body:** `raw` (JSON)
+
 ```json
 {
     "query": "Hello, how are you today?"
 }
 ```
--**Note:** if you don't include the 'Content-Type' header, the request will most likely fail.
+⚠️ **Note:** if you don't include the 'Content-Type' header, the request will most likely fail.  
+⚠️ **Note:** For now the app is fixated on a singular AI model only for ollama named `qwen3.5:9b` so to test it you need to have this model installed locally. If you use LMStudio you won't have any problems.
+   - Or change it to whatever you want in `services/ollama.py` in the class of the service.
 
--**Note:** For now the app is fixated on a singular AI model named `qwen3.5:9b` so to test it you need to have this model installed locally. 
-   - Or change it to whatever you want in `services/llm_service.py` in the class of the service you are using whether it be `LMStudioService` or `OllamaService`.
 
-#### 4. Upgrade Plan
-- **Method:** `POST`
-- **URL:** `http://localhost:5000/planUpgrade`
-- **Auth:** `Bearer Token`
-- **Body:** `raw` (JSON)
+#### 5. ⬆️ Upgrade Plan
+> **Method:** `POST` <br>
+> **URL:** `http://localhost:5000/planUpgrade` <br>
+> **Auth:** 🛡️ `Bearer Token` <br>
+> **Body:** `raw` (JSON)
+
 ```json
 {
     "upgrade_to": "PLUS_USER"
 }
 ```
-*Available levels: `BASIC_USER`, `PLUS_USER`, `PRO_USER`, `ENTERPRISE_USER`, `ADMIN_USER`.*
+💡 *Available levels: `BASIC_USER`, `PLUS_USER`, `PRO_USER`, `ENTERPRISE_USER`, `ADMIN_USER`.*
 
-#### 5. Get Private Info
-- **Method:** `GET`
-- **URL:** `http://localhost:5000/secret`
-- **Auth:** `Bearer Token`
+#### 6. 🕵️ Get Private Info
+> **Method:** `GET` <br>
+> **URL:** `http://localhost:5000/secret` <br>
+> **Auth:** 🛡️ `Bearer Token`
 
-#### 6. List All Users (Admin Only)
-- **Method:** `GET`
-- **URL:** `http://localhost:5000/showUsers`
-- **Auth:** `Bearer Token`
+#### 7. 👥 List All Users (Admin Only)
+> **Method:** `GET` <br>
+> **URL:** `http://localhost:5000/showUsers` <br>
+> **Auth:** 👑 `Bearer Token` (Admin)
 
-#### 7. View All Chat History (Admin Only)
-- **Method:** `GET`
-- **URL:** `http://localhost:5000/ai/history/all`
-- **Auth:** `Bearer Token`
+#### 8. 📜 View All Chat History (Admin Only)
+> **Method:** `GET` <br>
+> **URL:** `http://localhost:5000/ai/history/all` <br>
+> **Auth:** 👑 `Bearer Token` (Admin)
+
+---
 
 ## 🔐 User Permission Levels
 
@@ -244,7 +267,8 @@ Local_Ai_Communicate/
 - 🦙 [Ollama](https://ollama.ai/) - Local LLM desktop app.
 - 🖥️ [LM Studio](https://lmstudio.ai/) - Local LLM desktop app.
 
+---
 
-## The Project isn't fully complete!
+## 🛠️ The Project isn't fully complete!
 ### I am actively working on improving it and adding more features!
 ### In case you want to contact me, you can reach me at [kaloqnvelev1@gmail.com](mailto:kaloqnvelev1@gmail.com)
