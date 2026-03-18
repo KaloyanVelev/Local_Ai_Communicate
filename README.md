@@ -1,4 +1,4 @@
-# 🤖 Local AI Communicate(L.A.C)
+# 🤖 Local AI Communicate(L.A.C) NOT FULLY DEVELOPED
 
 A Flask REST API that lets authenticated users chat with a local LLM (via **Ollama** or **LM Studio**) and saves
 conversation history in the database. Features JWT-based authentication, role-based permissions, and a PostgreSQL database.
